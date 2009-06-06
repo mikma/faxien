@@ -26,15 +26,20 @@ if [ -d "$PREFIX/packages" ]; then
     ERL_LIBS=${ERL_LIBS%:}
     ERL_LIBS=${ERL_LIBS#:}
     export ERL_LIBS
-else
+    REL_DIR=$PREFIX/release_packages/$REL_NAME-$REL_VSN/release
+elif [ -d "$PREFIX/application_packages" ]; then
     export ROOTDIR="$PREFIX/application_packages/$ERTS_VSN"
     export BINDIR="$PREFIX/erts_packages/erts-$ERTS_VSN/bin"
     export LD_LIBRARY_PATH="$PREFIX/erts_packages/erts-$ERTS_VSN/lib:$LD_LIBRARY_PATH"
+    REL_DIR=$PREFIX/release_packages/$REL_NAME-$REL_VSN/release
+else
+    export ROOTDIR="$PREFIX"
+    export BINDIR="$ROOTDIR/erts-$ERTS_VSN/bin"
+    export LD_LIBRARY_PATH="$PREFIX/erts-$ERTS_VSN/lib:$LD_LIBRARY_PATH"
+    export REL_DIR="$PREFIX/releases/$REL_NAME-$REL_VSN"
 fi
 
 export EMU=beam
 export PROGNAME=erl
-
-REL_DIR=$PREFIX/release_packages/$REL_NAME-$REL_VSN/release
 
 exec $BINDIR/erlexec -boot $REL_DIR/$REL_NAME -noshell -run escript start -extra ${1+"$@"}
