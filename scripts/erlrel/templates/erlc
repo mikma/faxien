@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## Setup everything we need so that erlc has access to applications
 ## built with other patch-level different ERTS
